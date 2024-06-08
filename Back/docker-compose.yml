@@ -1,0 +1,30 @@
+version: '3'
+services:
+  app:
+    container_name: app
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_URL=jdbc:mysql://db:3306/childcare?createDatabaseIfNotExist=true&serverTimezone=UTC
+      - DB_USERNAME=root
+      - DB_PASSWORD=12345
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    container_name: db
+    image: mysql:8.0.23
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345
+      MYSQL_PASSWORD: 12345
+      MYSQL_DATABASE: childcare
+    volumes:
+      - data-mysql:/var/lib/mysql
+    restart: always
+
+volumes:
+  data-mysql:
